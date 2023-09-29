@@ -62,4 +62,6 @@ func main() {
 		fmt.Println( circular_set.Previous( DB , key ) )
 	}
 
+	DB.Close()
+
 }
