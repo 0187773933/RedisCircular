@@ -27,6 +27,20 @@ func Add( rdb *redis.Client , key string , member string ) {
 	rdb.ZAddNX( ctx , key , redis.Z{ Score: float64( score ) , Member: member } ).Result()
 }
 
+func Current( rdb *redis.Client , key string ) ( result string ) {
+	var ctx = context.Background()
+	key_index := key + ".INDEX"
+	index := Index( rdb , key_index )
+	items , err := rdb.ZRange( ctx , key , int64( index ) , int64( index ) ).Result()
+	if err != nil { panic( err ) }
+	if len( items ) > 0 {
+		result = items[ 0 ]
+	} else {
+		result = ""
+	}
+	return
+}
+
 func Next( rdb *redis.Client , key string ) ( result string ) {
 	var ctx = context.Background()
 
