@@ -24,7 +24,7 @@ func Add( rdb *redis.Client , key string , member string ) {
 	var ctx = context.Background()
 	score := rdb.ZCard( ctx , key ).Val()
 	// Add the new member to the sorted set with the score
-	rdb.ZAdd( ctx , key , redis.Z{ Score: float64( score ) , Member: member } ).Result()
+	rdb.ZAddNX( ctx , key , redis.Z{ Score: float64( score ) , Member: member } ).Result()
 }
 
 func Next( rdb *redis.Client , key string ) ( result string ) {
