@@ -18,6 +18,18 @@ else
    NextCommitNumber=1
 fi
 git add .
-git commit -m "$NextCommitNumber"
+git tag -l | xargs git tag -d
+if [ -n "$1" ]; then
+   git commit -m "$1"
+   git tag v1.0.$1
+else
+   git commit -m "$NextCommitNumber"
+   git tag v1.0.$NextCommitNumber
+fi
 git remote add origin git@github.com:0187773933/RedisCircular.git
+
+# https://proxy.golang.org/github.com/0187773933/FireC2Server/@v/v1.0.8.info
+# GOPROXY=https://proxy.golang.org GO111MODULE=on go get github.com/0187773933/FireC2Server@v1.0.8
+# https://pkg.go.dev/github.com/0187773933/FireC2Server@v1.0.8
+git push origin --tags
 git push origin master
